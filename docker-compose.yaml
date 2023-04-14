@@ -1,0 +1,18 @@
+# see README.txt for info
+
+version: '3.8'
+services:
+  tomcat-10-0-11-jdk17:
+    image: tomcat:10.0-jdk17
+    ports:
+#     expose tomcat port 8080(container) on host as port 8888(host)
+      - "8888:8080"
+#     expose java debugging port 5005 on host as port 5005  (HOST:CONTAINER)
+      - "5005:5005"
+    command: "catalina.sh run"
+    volumes:
+#     "host path to the directory with .war file" / "container tomcat directory with webapps"
+      - "./target:/usr/local/tomcat/webapps"
+    environment:
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+#      JAVA_OPTS: "JAVA_OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
